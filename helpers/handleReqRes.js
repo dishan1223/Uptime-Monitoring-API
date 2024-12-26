@@ -30,16 +30,6 @@ handler.handleReqRes = (req, res) => {
   // if path does not exist then this line will fire up not found response
   const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
 
-  chosenHandler(requestProperty, (statusCode ,payload) => {
-    statusCode = typeof(statusCode) === 'number' ? statusCode : 500;
-    payload = typeof(payload) === 'object' ? payload : {};
-    
-    const payloadString = JSON.stringify(payload);
-
-    // return final response
-    res.writeHead(statusCode);
-    res.end(payloadString);
-  })
 
   req.on('data', (buffer) => {
     realData += decoder.write(buffer);
@@ -48,8 +38,17 @@ handler.handleReqRes = (req, res) => {
   // after the buffer stream ends the decoder must be stopped!
   req.on('end', () => {
     realData += decoder.end();
-    console.log(realData);
-    res.end();
+
+    chosenHandler(requestProperty, (statusCode, payload) => {
+      statusCode = typeof(statusCode) === 'number' ? statusCode : 500;
+      payload = typeof(payload) === 'object' ? payload : {};
+
+      const payloadString = JSON.stringify(payload);
+
+      //write head takes statusCode 
+      res.writeHead(statusCode);
+      res.end(payloadString);
+    })
   });
 };
 
