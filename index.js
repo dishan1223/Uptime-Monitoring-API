@@ -10,8 +10,18 @@
 const http = require('http');
 const { handleReqRes } = require('./helpers/handleReqRes');
 const environment = require('./helpers/environments');
+const data = require('./lib/data');
 
 const app = {};
+
+// testing file system
+// @TODO: pore muche dibo just testing
+data.read('test','newFile', (err, data)=>{
+  if(err){
+    console.log(`error was: ${err}`);
+  }
+  console.log(data);
+})
 
 app.createServer = () => {
   const server = http.createServer(app.handleReqRes);
