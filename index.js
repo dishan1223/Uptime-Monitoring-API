@@ -16,11 +16,8 @@ const app = {};
 
 // testing file system
 // @TODO: pore muche dibo just testing
-data.read('test','newFile', (err, data)=>{
-  if(err){
-    console.log(`error was: ${err}`);
-  }
-  console.log(data);
+data.update('test','newFile',{'name':'name',"language":"lang"}, (err)=>{
+  console.log(`error was: ${err}`);
 })
 
 app.createServer = () => {
