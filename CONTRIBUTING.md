@@ -1,6 +1,6 @@
 # Contributions to Uptime Monitoring API
 
-We welcome contributions from the community! Whether it's bug reports, feature suggestions, or code contributions, your help is appreciated. Please follow the guidelines below to ensure a smooth and collaborative process.
+We welcome contributions from the community, whether bug reports, feature suggestions, or code contributions. I appreciate your help. Please follow the guidelines below to ensure a smooth and collaborative process.
 
 ---
 
