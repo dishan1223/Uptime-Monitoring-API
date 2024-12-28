@@ -2,7 +2,7 @@
 
 const handler = {};
 
-handler.sampleHandle = (requestProperty, callback) => {
+handler.sampleHandler = (requestProperty, callback) => {
   callback(200, {
     message: "this is a sample url",
   });
