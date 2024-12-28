@@ -16,7 +16,7 @@ const app = {};
 
 // testing file system
 // @TODO: pore muche dibo just testing
-data.update('test','newFile',{'name':'name',"language":"lang"}, (err)=>{
+data.delete('test','newFile', (err)=>{
   console.log(`error was: ${err}`);
 })
 
