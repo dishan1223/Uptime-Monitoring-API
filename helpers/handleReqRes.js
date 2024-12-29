@@ -3,6 +3,7 @@ const { StringDecoder } = require('string_decoder'); // StringDecoder is a class
 const url = require('url');
 const routes = require('../routes');
 const { notFoundHandler } = require('../handlers/routesHandler/notFound');
+const { parseJSON } = require('../helpers/utilities');
 
 const handler = {};
 
@@ -38,6 +39,9 @@ handler.handleReqRes = (req, res) => {
   // after the buffer stream ends the decoder must be stopped!
   req.on('end', () => {
     realData += decoder.end();
+
+    // parseJSON is a custom method created in utilities file
+    rquestProperties.body = parseJSON(realData);
 
     chosenHandler(requestProperty, (statusCode, payload) => {
       statusCode = typeof(statusCode) === 'number' ? statusCode : 500;
