@@ -16,7 +16,7 @@ handler.handleReqRes = (req, res) => {
   const queryStringObject = parsedUrl.query;
   const headerObject = req.headers;
 
-  const requestProperty = {
+  const requestProperties = {
     parsedUrl,
     path,
     trimmedPath,
@@ -31,7 +31,6 @@ handler.handleReqRes = (req, res) => {
   // if path does not exist then this line will fire up not found response
   const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
 
-
   req.on('data', (buffer) => {
     realData += decoder.write(buffer);
   });
@@ -40,21 +39,26 @@ handler.handleReqRes = (req, res) => {
   req.on('end', () => {
     realData += decoder.end();
 
-    // parseJSON is a custom method created in utilities file
-    rquestProperties.body = parseJSON(realData);
+    if( realData.length > 0 ) {
+      // parseJSON is a custom method created in utilities file
+      requestProperties.body = parseJSON(realData);
 
-    chosenHandler(requestProperty, (statusCode, payload) => {
-      statusCode = typeof(statusCode) === 'number' ? statusCode : 500;
-      payload = typeof(payload) === 'object' ? payload : {};
+      chosenHandler(requestProperties, (statusCode, payload) => {
+        statusCode = typeof (statusCode) === 'number' ? statusCode : 500;
+        payload = typeof (payload) === 'object' ? payload : {};
 
-      const payloadString = JSON.stringify(payload);
+        const payloadString = JSON.stringify(payload);
 
-      // write head takes statusCode 
-      // tellint the client the reponse is in json format
-      res.setHeader('Content-Type','application/json');
-      res.writeHead(statusCode);
-      res.end(payloadString);
-    })
+        // write head takes statusCode 
+        // telling the client the reponse is in json format
+        // check if the request header has been already sent
+        if (!res.headersSent) {
+          res.writeHead(statusCode, { 'Content-Type': 'application/json' });
+          res.end(payloadString);
+        }
+      })
+    }
+
   });
 };
 
